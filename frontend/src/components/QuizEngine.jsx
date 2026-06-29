@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import * as wanakana from 'wanakana';
 
 const LiquidBackground = () => (
   <div className="liquid-bg-container">
@@ -23,6 +24,11 @@ const QuizEngine = ({ studySet, mode, onFinish, onBack }) => {
   const [showHint, setShowHint] = useState(false);
   // Use a ref to track if answer has already been handled (prevents double-fire)
   const answeredRef = useRef(false);
+
+  const handleInputChange = (e) => {
+    const val = e.target.value;
+    setUserInput(wanakana.toHiragana(val, { IMEMode: true }));
+  };
 
   // Shuffle the questions once at the beginning of the quiz session
   const questions = useMemo(() => {
@@ -235,9 +241,13 @@ const QuizEngine = ({ studySet, mode, onFinish, onBack }) => {
                 <input
                   autoFocus
                   value={userInput}
-                  onChange={(e) => setUserInput(e.target.value)}
+                  onChange={handleInputChange}
                   onKeyDown={(e) => e.key === 'Enter' && userInput.trim() && handleAnswer(userInput)}
-                  placeholder="Type your answer..."
+                  placeholder="Type Romaji (e.g. nihongo -> にほんご)..."
+                  autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck="false"
                   className="w-full glass-input px-6 py-4 text-2xl font-light focus:outline-none transition-all duration-300 text-center rounded-2xl text-zen-black placeholder-black/30"
                 />
                 <p className="text-center mt-4 text-[9px] text-zen-black/60 uppercase tracking-[0.3em] font-bold">

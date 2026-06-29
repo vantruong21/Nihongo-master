@@ -27,18 +27,34 @@ public class QuizController {
 
     @GetMapping("/sessions")
     public ResponseEntity<List<QuizSession>> getAllSessions() {
-        return ResponseEntity.ok(quizSessionRepository.findAllByOrderByStartTimeDesc());
+        return ResponseEntity.ok(quizSessionRepository.findTop20ByOrderByStartTimeDesc());
     }
 
     @GetMapping("/stats")
     public ResponseEntity<Map<String, Object>> getStats() {
         Map<String, Object> stats = new HashMap<>();
-        stats.put("totalSessions", quizSessionRepository.countSessions());
-        stats.put("totalCorrect", quizSessionRepository.sumCorrect());
-        stats.put("totalQuestions", quizSessionRepository.sumTotal());
+        
+        // Use optimized single query to fetch count/sums
+        List<Object[]> summary = quizSessionRepository.getStatsSummary();
+        Long totalSessions = 0L;
+        Long totalCorrect = 0L;
+        Long totalQuestions = 0L;
+        if (summary != null && !summary.isEmpty()) {
+            Object[] row = summary.get(0);
+            if (row != null) {
+                totalSessions = row[0] != null ? ((Number) row[0]).longValue() : 0L;
+                totalCorrect = row[1] != null ? ((Number) row[1]).longValue() : 0L;
+                totalQuestions = row[2] != null ? ((Number) row[2]).longValue() : 0L;
+            }
+        }
+        
+        stats.put("totalSessions", totalSessions);
+        stats.put("totalCorrect", totalCorrect);
+        stats.put("totalQuestions", totalQuestions);
 
-        // Calculate streak in Java to avoid JPQL casting issues
-        List<java.time.LocalDateTime> startTimes = quizSessionRepository.findAllStartTimes();
+        // Limit streak check to the last 1000 start times to prevent memory/DB blowup
+        List<java.time.LocalDateTime> startTimes = quizSessionRepository.findRecentStartTimes(
+                org.springframework.data.domain.PageRequest.of(0, 1000));
         List<java.time.LocalDate> dates = startTimes.stream()
                 .filter(t -> t != null)
                 .map(java.time.LocalDateTime::toLocalDate)
@@ -68,7 +84,9 @@ public class QuizController {
 
     @GetMapping("/weak-points")
     public ResponseEntity<List<Map<String, Object>>> getWeakPoints() {
-        List<Object[]> raw = quizDetailRepository.findWeakQuestions();
+        // Limit weak points query to top 10 at the database level
+        List<Object[]> raw = quizDetailRepository.findWeakQuestions(
+                org.springframework.data.domain.PageRequest.of(0, 10));
         List<Map<String, Object>> result = new ArrayList<>();
         for (Object[] row : raw) {
             Map<String, Object> item = new HashMap<>();

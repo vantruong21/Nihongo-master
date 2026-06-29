@@ -15,5 +15,5 @@ public interface QuizDetailRepository extends JpaRepository<QuizDetail, Long> {
            "FROM QuizDetail d WHERE d.isCorrect = false " +
            "GROUP BY d.question.id, d.question.prompt, d.question.answer " +
            "ORDER BY COUNT(d) DESC")
-    List<Object[]> findWeakQuestions();
+    List<Object[]> findWeakQuestions(org.springframework.data.domain.Pageable pageable);
 }

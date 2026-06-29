@@ -58,7 +58,7 @@ const StatsPage = ({ onBack }) => {
               </h2>
             </div>
             <p className="text-zen-black/60 text-xs font-semibold hidden md:block">
-              {sessions.length} sessions recorded
+              {stats?.totalSessions || 0} sessions recorded
             </p>
           </div>
           <div className="w-full h-0.5 bg-gradient-to-r from-zen-black via-white/50 to-transparent mt-6"></div>

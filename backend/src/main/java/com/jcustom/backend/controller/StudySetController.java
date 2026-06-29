@@ -35,8 +35,8 @@ public class StudySetController {
     }
 
     @GetMapping
-    public ResponseEntity<List<StudySet>> getAllStudySets() {
-        return ResponseEntity.ok(studySetRepository.findAll());
+    public ResponseEntity<List<com.jcustom.backend.dto.StudySetSummaryDTO>> getAllStudySets() {
+        return ResponseEntity.ok(studySetRepository.findAllSummary());
     }
 
     @GetMapping("/{id}")

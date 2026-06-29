@@ -105,10 +105,23 @@ function App() {
     ...(token ? { 'Authorization': `Bearer ${token}` } : {})
   });
 
-  const handleStartQuiz = (set, mode) => {
-    setActiveSet(set);
-    setQuizMode(mode);
-    setView('QUIZ');
+  const handleStartQuiz = async (set, mode) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/study-sets/${set.id}`, {
+        headers: authHeaders()
+      });
+      if (!response.ok) throw new Error('Failed to fetch study set details');
+      const detailedSet = await response.json();
+      setActiveSet(detailedSet);
+      setQuizMode(mode);
+      setView('QUIZ');
+    } catch (error) {
+      console.error('Error starting quiz:', error);
+      alert('Failed to load study set cards. Please check your network connection.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDeleteSet = async (id, title) => {
@@ -325,7 +338,7 @@ function App() {
                 <div>
                   <div className="flex items-center justify-between mb-6">
                     <span className="text-[10px] text-zen-black/60 font-bold uppercase tracking-[0.3em]">
-                      {set.questions?.length || 0} cards
+                      {set.cardCount ?? (set.questions?.length || 0)} cards
                     </span>
                     {user?.role === 'ADMIN' ? (
                       <div className="flex items-center space-x-3">
