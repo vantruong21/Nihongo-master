@@ -50,10 +50,25 @@ const KanjiLookup = ({ onBack }) => {
 
   const getPos = (e, canvas) => {
     const rect = canvas.getBoundingClientRect();
-    if (e.touches) {
-      return [e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top];
+    // Scale factor: canvas internal size vs CSS display size
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    if (e.touches && e.touches.length > 0) {
+      return [
+        (e.touches[0].clientX - rect.left) * scaleX,
+        (e.touches[0].clientY - rect.top) * scaleY,
+      ];
     }
-    return [e.clientX - rect.left, e.clientY - rect.top];
+    if (e.changedTouches && e.changedTouches.length > 0) {
+      return [
+        (e.changedTouches[0].clientX - rect.left) * scaleX,
+        (e.changedTouches[0].clientY - rect.top) * scaleY,
+      ];
+    }
+    return [
+      (e.clientX - rect.left) * scaleX,
+      (e.clientY - rect.top) * scaleY,
+    ];
   };
 
   const redraw = useCallback(() => {
@@ -233,8 +248,8 @@ const KanjiLookup = ({ onBack }) => {
               </div>
               <canvas
                 ref={canvasRef}
-                width={200}
-                height={200}
+                width={400}
+                height={400}
                 className="w-full aspect-square rounded-xl border border-black/10 bg-white/60 cursor-crosshair touch-none"
                 style={{ touchAction: 'none' }}
                 onMouseDown={onMouseDown}
