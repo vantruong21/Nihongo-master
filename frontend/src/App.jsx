@@ -5,6 +5,7 @@ import QuizEngine from './components/QuizEngine';
 import QuizResults from './components/QuizResults';
 import StatsPage from './components/StatsPage';
 import AuthPage from './components/AuthPage';
+import KanjiLookup from './components/KanjiLookup';
 import { API_BASE_URL } from './config';
 
 const LiquidBackground = () => (
@@ -244,9 +245,28 @@ function App() {
           onImportClick={() => setIsImportModalOpen(true)}
           onLibraryClick={() => setView('LIBRARY')}
           onStatsClick={() => setView('STATS')}
+          onKanjiExplorerClick={() => setView('KANJI_EXPLORER')}
           onLogout={handleLogout}
         />
         <StatsPage onBack={() => setView('LIBRARY')} />
+      </>
+    );
+  }
+
+  // Kanji Explorer view
+  if (view === 'KANJI_EXPLORER') {
+    return (
+      <>
+        <LiquidBackground />
+        <Navbar
+          user={user}
+          onImportClick={() => setIsImportModalOpen(true)}
+          onLibraryClick={() => setView('LIBRARY')}
+          onStatsClick={() => setView('STATS')}
+          onKanjiExplorerClick={() => setView('KANJI_EXPLORER')}
+          onLogout={handleLogout}
+        />
+        <KanjiLookup onBack={() => setView('LIBRARY')} />
       </>
     );
   }
@@ -261,6 +281,7 @@ function App() {
         onImportClick={() => setIsImportModalOpen(true)}
         onLibraryClick={() => setView('LIBRARY')}
         onStatsClick={() => setView('STATS')}
+        onKanjiExplorerClick={() => setView('KANJI_EXPLORER')}
         onLogout={handleLogout}
       />
       

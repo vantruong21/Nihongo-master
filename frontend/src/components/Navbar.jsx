@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const Navbar = ({ user, onImportClick, onLibraryClick, onStatsClick, onLogout }) => {
+const Navbar = ({ user, onImportClick, onLibraryClick, onStatsClick, onKanjiExplorerClick, onLogout }) => {
   const [scrolled, setScrolled] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
 
@@ -52,6 +52,12 @@ const Navbar = ({ user, onImportClick, onLibraryClick, onStatsClick, onLogout })
             className="glass-link text-zen-black/60 hover:text-zen-black transition-colors duration-300 cursor-pointer font-semibold"
           >
             Metrics
+          </button>
+          <button
+            onClick={onKanjiExplorerClick}
+            className="glass-link text-zen-black/60 hover:text-zen-black transition-colors duration-300 cursor-pointer font-semibold"
+          >
+            🔍 Kanji Explorer
           </button>
 
           {/* User Avatar & Menu */}

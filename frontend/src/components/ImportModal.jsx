@@ -116,7 +116,7 @@ const ImportModal = ({ isOpen, onClose, onImport }) => {
             <textarea
               value={jsonData}
               onChange={(e) => { setJsonData(e.target.value); setError(''); }}
-              placeholder='{ "title": "N5 Kanji", "cards": [{ "prompt": "一", "answer": "ichi" }] }'
+              placeholder={'{ "title": "N5 Kanji", "description": "Basic Kanji", "cards": [\n  { "prompt": "飛", "answer": "fly / tobu", "type": "KANJI", "level": "N5", "hint": "A bird flying", "mnemonic": "Wings outstretched, soaring high" }\n] }'}
               className="w-full h-44 p-4 glass-input font-mono text-xs focus:outline-none transition-all duration-300 resize-none text-zen-black placeholder-black/30 rounded-2xl"
               spellCheck="false"
             />
