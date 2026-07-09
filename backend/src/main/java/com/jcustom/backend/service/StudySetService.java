@@ -41,6 +41,8 @@ public class StudySetService {
                         .prompt(cardDto.getPrompt())
                         .answer(cardDto.getAnswer())
                         .hint(cardDto.getHint())
+                        .mnemonic(cardDto.getMnemonic())
+                        .level(cardDto.getLevel())
                         .type(parseQuestionType(cardDto.getType()))
                         .studySet(studySet)
                         .build();

@@ -24,7 +24,14 @@ public class Question {
     @Column(nullable = false, columnDefinition = "TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     private String answer;
 
+    @Column(columnDefinition = "VARCHAR(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     private String hint;
+
+    @Column(columnDefinition = "VARCHAR(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
+    private String mnemonic;
+
+    @Column(length = 10)
+    private String level; // JLPT level: N5, N4, N3, N2, N1
 
     @Enumerated(EnumType.STRING)
     private QuestionType type;

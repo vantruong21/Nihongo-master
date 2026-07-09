@@ -44,6 +44,8 @@ CREATE TABLE `questions` (
   `prompt` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `answer` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `hint` VARCHAR(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mnemonic` VARCHAR(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Optional memorization tip text',
+  `level` VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'JLPT level: N5, N4, N3, N2, N1',
   `type` VARCHAR(50) NOT NULL COMMENT 'Values: VOCAB, KANJI, GRAMMAR',
   `study_set_id` BIGINT NOT NULL,
   CONSTRAINT `fk_question_studyset` FOREIGN KEY (`study_set_id`) REFERENCES `study_sets` (`id`) ON DELETE CASCADE
