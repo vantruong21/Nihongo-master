@@ -22,6 +22,8 @@ const QuizEngine = ({ studySet, mode, onFinish, onBack }) => {
   const [showConfirmExit, setShowConfirmExit] = useState(false);
   // Show/hide hint: reset per question
   const [showHint, setShowHint] = useState(false);
+  // Show/hide mnemonic: reset per question
+  const [showMnemonic, setShowMnemonic] = useState(false);
   // Use a ref to track if answer has already been handled (prevents double-fire)
   const answeredRef = useRef(false);
 
@@ -68,8 +70,9 @@ const QuizEngine = ({ studySet, mode, onFinish, onBack }) => {
     if (mode === 'GENIUS') {
       setTimeLeft(10);
     }
-    // Reset hint and answered guard on every new question
+    // Reset hint, mnemonic, and answered guard on every new question
     setShowHint(false);
+    setShowMnemonic(false);
     answeredRef.current = false;
   }, [currentIndex, currentInputType, mode, generateOptions]);
 
@@ -200,9 +203,32 @@ const QuizEngine = ({ studySet, mode, onFinish, onBack }) => {
           feedback === 'wrong' ? 'border-red-300 bg-red-500/20 backdrop-blur-md' :
           ''
         }`}>
-          <span className="text-[9px] uppercase tracking-[0.4em] text-zen-black/60 font-bold mb-6 block">
+          <span className="text-[9px] uppercase tracking-[0.4em] text-zen-black/60 font-bold mb-3 block">
             {currentQuestion.type || 'QUESTION'}
           </span>
+
+          {/* Mnemonic Toggle - shown between type label and prompt, only if mnemonic exists */}
+          {currentQuestion.mnemonic && !feedback && (
+            <div className="mb-5">
+              {showMnemonic ? (
+                <button
+                  onClick={() => setShowMnemonic(false)}
+                  className="inline-flex items-center gap-2 text-xs text-zen-black/70 font-medium italic bg-amber-50/80 border border-amber-200/60 rounded-2xl px-5 py-2.5 animate-fade-in cursor-pointer hover:bg-amber-50 transition-colors duration-200 max-w-sm mx-auto"
+                >
+                  <span>🧠</span>
+                  <span>{currentQuestion.mnemonic}</span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => setShowMnemonic(true)}
+                  className="text-[9px] uppercase tracking-[0.25em] font-bold text-amber-600/60 hover:text-amber-600 transition-colors duration-200 border border-amber-200/40 hover:border-amber-300 rounded-full px-4 py-1.5 cursor-pointer"
+                >
+                  🧠 Show Mnemonic
+                </button>
+              )}
+            </div>
+          )}
+
           <h2 className="text-5xl md:text-7xl font-light text-zen-black tracking-tight leading-none">
             {currentQuestion.prompt}
           </h2>
