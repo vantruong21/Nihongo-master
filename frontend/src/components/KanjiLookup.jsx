@@ -28,17 +28,11 @@ const KanjiLookup = ({ onBack }) => {
     const fetchAllKanji = async () => {
       setLoading(true);
       try {
-        const setsRes = await fetch(`${API_BASE_URL}/api/study-sets`);
-        if (!setsRes.ok) throw new Error('Failed to fetch study sets');
-        const sets = await setsRes.json();
-        const detailPromises = sets.map(s =>
-          fetch(`${API_BASE_URL}/api/study-sets/${s.id}`).then(r => r.json())
-        );
-        const details = await Promise.all(detailPromises);
-        const kanji = details
-          .flatMap(d => d.questions || [])
-          .filter(q => q.type === 'KANJI');
-        setAllKanji(kanji);
+        // Single endpoint: fetches ALL KANJI cards in one DB query (avoids N+1 problem)
+        const res = await fetch(`${API_BASE_URL}/api/study-sets/kanji-cards`);
+        if (!res.ok) throw new Error('Failed to fetch kanji cards');
+        const kanji = await res.json();
+        setAllKanji(Array.isArray(kanji) ? kanji : []);
       } catch (e) {
         console.error('Error fetching kanji:', e);
       } finally {

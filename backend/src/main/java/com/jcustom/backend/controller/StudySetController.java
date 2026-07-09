@@ -1,8 +1,10 @@
 package com.jcustom.backend.controller;
 
 import com.jcustom.backend.dto.ImportRequest;
+import com.jcustom.backend.entity.Question;
 import com.jcustom.backend.entity.StudySet;
 import com.jcustom.backend.service.StudySetService;
+import com.jcustom.backend.repository.QuestionRepository;
 import com.jcustom.backend.repository.StudySetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ public class StudySetController {
 
     private final StudySetService studySetService;
     private final StudySetRepository studySetRepository;
+    private final QuestionRepository questionRepository;
 
     @PostMapping("/import")
     public ResponseEntity<StudySet> importStudySet(@RequestBody ImportRequest request) {
@@ -37,6 +40,12 @@ public class StudySetController {
     @GetMapping
     public ResponseEntity<List<com.jcustom.backend.dto.StudySetSummaryDTO>> getAllStudySets() {
         return ResponseEntity.ok(studySetRepository.findAllSummary());
+    }
+
+    // Returns all KANJI-type cards in a single DB query for the Kanji Explorer page
+    @GetMapping("/kanji-cards")
+    public ResponseEntity<List<Question>> getAllKanjiCards() {
+        return ResponseEntity.ok(questionRepository.findAllByTypeOrderById(Question.QuestionType.KANJI));
     }
 
     @GetMapping("/{id}")
