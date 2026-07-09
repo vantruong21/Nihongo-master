@@ -22,7 +22,7 @@ const Navbar = ({ user, onImportClick, onLibraryClick, onStatsClick, onKanjiExpl
   const isAdmin = user?.role === 'ADMIN';
 
   return (
-    <nav className={`fixed top-0 w-full h-16 glass-nav z-50 transition-all duration-500 ${scrolled ? 'border-b border-white/40 shadow-sm' : 'border-b border-transparent'}`}>
+    <nav className={`fixed top-0 w-full h-16 glass-nav z-50 transition-all duration-400 ${scrolled ? 'glass-nav--scrolled' : 'border-b border-transparent'}`}>
       <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-4 md:px-16">
         {/* Logo */}
         <a href="/" className="group cursor-pointer no-underline flex-shrink-0">
