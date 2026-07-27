@@ -1,4 +1,4 @@
-# 🇯🇵 日本語 (J-Custom Deck) - Nền tảng Học Tiếng Nhật Cá Nhân Hóa
+# 🇯🇵 日本語  - HÃY HỌC THEO CÁCH CỦA BẠN 
 
 Một ứng dụng web full-stack hỗ trợ học tiếng Nhật (từ vựng, Kanji, ngữ pháp) thông qua các bộ dữ liệu cá nhân hóa (JSON). Ứng dụng tích hợp cơ chế Gamification tăng áp lực học tập và cung cấp trang phân tích thống kê chi tiết tiến độ.
 
